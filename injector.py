@@ -3,13 +3,13 @@ import sys
 def inject_binary(target, payload):
     # Read the payload
     with open(payload, 'rb') as payload_file:
-        payload = payload_file.read()
+        payload_content = payload_file.read()
         
     # Read the target and append the payload
     with open(target, 'ab') as target_file:
-        target_file.write(payload)
+        target_file.write(payload_content)
         
-    print('Injected {payload} into {target}'.format(payload=payload, target=target))
+    print(f'Injected {payload} into {target}')
     
     
 if __name__ == '__main__':
