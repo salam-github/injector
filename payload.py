@@ -11,20 +11,16 @@ def inject_payload(target, payload_path):
     
     # Create a new section for the payload
     new_section = lief.ELF.Section(".injected")
-    new_section.content = list(payload_data)  # LIEF expects the content as a list of integers
+    new_section.content = list(payload_data)  # LIEF expects the content as a list of bytes
     new_section.type = lief.ELF.SECTION_TYPES.PROGBITS
     new_section.add(lief.ELF.SECTION_FLAGS.EXECINSTR | lief.ELF.SECTION_FLAGS.ALLOC)
     
     # Add the new section to the ELF file
     elf.add(new_section)
     
-    # Adjust the ELF entry point if necessary
-    # elf.header.entrypoint = new_section.virtual_address
-
-    # Build the modified ELF
-    builder = lief.ELF.Builder(elf)
-    builder.build()
-    builder.save('modified_' + target)  # Saves the modified ELF file
+    # Corrected approach to save the modified ELF file
+    output_path = 'modified_' + target
+    elf.write(output_path)
     
     print(f'Injected {payload_path} into {target} with modifications.')
 
